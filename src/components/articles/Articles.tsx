@@ -1,17 +1,12 @@
-
 import { useState } from "react"
 // Icon components
-import {
-  Plus,
-} from "lucide-react"
+import { Plus } from "lucide-react"
+
+// import editor component
+import ArticleEditor from "@/components/editor/ArticleEditor"
 
 // components button
 import { Button } from "@/components/ui/button"
-
-
-
-
-
 
 // Articles component
 export function Articles() {
@@ -38,6 +33,7 @@ export function Articles() {
           مقاله جدید
         </Button>
       </div>
+
       {showForm && (
         <div className="rounded-xl border bg-background p-5">
           <h3 className="mb-4 text-lg font-semibold">ساخت مقاله جدید</h3>
@@ -79,18 +75,17 @@ export function Articles() {
                 </div>
               )}
             </div>
-            <textarea
-              placeholder="متن مقاله"
-              rows={5}
-              value={content}
-              onChange={(event) => setContent(event.target.value)}
-              className="w-full rounded-lg border bg-background px-3 py-2"
-            />
+            <div className="space-y-2">
+              <label className="block text-sm font-medium">محتوای مقاله</label>
+
+              <ArticleEditor content={content} onChange={setContent} />
+            </div>
 
             <Button onClick={() => setShowForm(false)}>بستن فرم</Button>
           </div>
         </div>
       )}
+
       <div className="overflow-x-auto rounded-xl border bg-background">
         <table className="w-full text-right text-sm">
           <thead className="bg-muted/50">
