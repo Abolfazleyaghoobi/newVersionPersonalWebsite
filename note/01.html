@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خلاصه آموزش امروز | ویرایشگر مقاله</title>
+  <style>
+    body {
+      font-family: Tahoma, Arial, sans-serif;
+      max-width: 850px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #f1f5f9;
+      color: #1e293b;
+      line-height: 2;
+    }
+    section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 18px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+    h1 { color: #1d4ed8; }
+    h2 { font-size: 20px; color: #2563eb; }
+    code {
+      direction: ltr;
+      display: inline-block;
+      background: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    pre {
+      direction: ltr;
+      text-align: left;
+      overflow-x: auto;
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 14px;
+      border-radius: 8px;
+    }
+    pre code { background: transparent; }
+    .warning {
+      background: #fff7ed;
+      padding: 12px;
+      border-right: 4px solid #f97316;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>گزارش امروز: ویرایشگر مقاله</h1>
+    <p>آشنایی با Tiptap، دکمه‌های قالب‌بندی متن و بررسی مشکل نمایش فهرست‌ها.</p>
+  </header>
+
+  <section>
+    <h2>۱. کارهایی که انجام دادیم</h2>
+    <ul>
+      <li>ساخت و اتصال کامپوننت <code>ArticleEditor.tsx</code>.</li>
+      <li>اضافه‌کردن تیترهای ۲، ۳ و ۴.</li>
+      <li>اضافه‌کردن متن ضخیم، ایتالیک، لینک، بازگشت و انجام دوباره.</li>
+      <li>اضافه‌کردن دکمه‌های فهرست نقطه‌ای و شماره‌دار.</li>
+      <li>بررسی خروجی دکمه‌ها با ابزار Console مرورگر.</li>
+      <li>بررسی استایل‌های CSS برای نمایش علامت‌ها و شماره‌های فهرست.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>۲. نکات آموزشی کلیدی</h2>
+    <ul>
+      <li><code>useEditor</code> نمونه ویرایشگر Tiptap را ایجاد می‌کند.</li>
+      <li><code>StarterKit</code> قابلیت‌های پایه مانند تیترها و فهرست‌ها را فراهم می‌کند.</li>
+      <li><code>editor.getHTML()</code> محتوای ویرایشگر را به HTML تبدیل می‌کند.</li>
+      <li><code>onChange</code> برای انتقال محتوای جدید به کامپوننت والد استفاده می‌شود.</li>
+      <li><code>toggleBulletList()</code> فهرست نقطه‌ای را فعال یا غیرفعال می‌کند.</li>
+      <li><code>toggleOrderedList()</code> فهرست شماره‌دار را فعال یا غیرفعال می‌کند.</li>
+      <li><code>preventDefault()</code> می‌تواند از ازدست‌رفتن انتخاب متن هنگام کلیک روی دکمه جلوگیری کند.</li>
+      <li>اجرای موفق فرمان لزوماً به معنی نمایش صحیح آن در صفحه نیست؛ CSS هم اهمیت دارد.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>۳. نتیجه بررسی فهرست‌ها</h2>
+    <p>در Console این خروجی‌ها ثبت شدند:</p>
+    <pre><code>Bullet list: true
+Ordered list: true</code></pre>
+    <p>HTML تولیدشده شامل تگ‌های <code>&lt;ul&gt;</code> و <code>&lt;ol&gt;</code> بود؛ بنابراین فرمان‌ها اجرا می‌شوند.</p>
+    <div class="warning">
+      <strong>مشکل باقی‌مانده:</strong>
+      علامت‌های نقطه‌ای و شماره‌های فهرست در صفحه دیده نمی‌شوند. استایل‌های صریح Tailwind برای فهرست‌ها پیشنهاد شده‌اند، اما نتیجه نهایی هنوز تأیید نشده است.
+    </div>
+  </section>
+
+  <section>
+    <h2>۴. راهنمای ادامه کار</h2>
+    <ol>
+      <li>کلاس <code>editorProps.attributes.class</code> را بررسی کن.</li>
+      <li>برای <code>ul</code> از <code>list-disc</code> و برای <code>ol</code> از <code>list-decimal</code> استفاده کن.</li>
+      <li>با نوشتن چند خط متن، هر دو نوع فهرست را دوباره آزمایش کن.</li>
+      <li>اگر مشکل باقی بود، استایل‌های عمومی پروژه را بررسی کن.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>۵. مرحله‌های بعدی پروژه</h2>
+    <ul>
+      <li>تکمیل و آزمایش فهرست‌ها.</li>
+      <li>افزودن تصویر داخل متن مقاله.</li>
+      <li>تکمیل بلوک کد و نمایش مناسب آن.</li>
+      <li>اتصال فرم مقاله به API بک‌اند و ذخیره محتوا.</li>
+    </ul>
+    <p><strong>کلمه ادامه پروژه: گلابی 🍐</strong></p>
+  </section>
+</body>
+</html>
