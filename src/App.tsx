@@ -8,7 +8,12 @@ import {
   Newspaper,
   UsersRound,
   Tags as TagsIcon,
+
 } from "lucide-react"
+import { Articles } from "./components/articles/Articles"
+
+// components button
+
 
 // Dashboard component
 function Dashboard() {
@@ -46,7 +51,7 @@ function Dashboard() {
           )
         })}
       </div>
-{/* TODO: نیاز من به بررسی */}
+      {/* TODO: نیاز من به بررسی */}
       <section className="rounded-xl border bg-background p-5">
         <h3 className="mb-4 text-lg font-semibold">آخرین مقالات</h3>
 
@@ -71,10 +76,6 @@ function Dashboard() {
       </section>
     </div>
   )
-}
-// Articles component
-function Articles() {
-  return <h1 className="text-2xl font-bold">مدیریت مقالات</h1>
 }
 
 // Users component
