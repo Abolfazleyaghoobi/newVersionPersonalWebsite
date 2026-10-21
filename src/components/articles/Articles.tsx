@@ -121,6 +121,9 @@ export function Articles() {
     setSelectedTags([...article.tags])
     setShowForm(true)
   }
+
+
+  
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -237,6 +240,7 @@ export function Articles() {
 
               <ArticleEditor content={content} onChange={setContent} />
             </div>
+            {/*  */}
             <div className="flex flex-wrap gap-3">
               <Button type="button" onClick={handleCreateArticle}>
                 {editingArticleId !== null ? "ذخیره تغییرات" : "ایجاد مقاله"}
@@ -289,15 +293,15 @@ export function Articles() {
 
                 <td className="p-4">
                   <span
-                    className={`rounded-full px-2.5 py-1 text-xs ${
+                    className={` px-2.5 py-2.5 w-45 rounded-[9px] flex items-center justify-between text-xs ${
                       article.status === "published"
-                        ? "bg-green-800 text-green-100"
-                        : "bg-yellow-800 text-yellow-100"
+                        ? "bg-[#474747] text-green-100"
+                        : "bg-[#1b1b1b] text-yellow-100"
                     }`}
                   >
                     {article.status === "published" ? "منتشرشده" : "پیش‌نویس"}
 
-                    <td className="p-4">
+                    <td className="">
                       <div className="flex items-center gap-2">
                         <Button
                           variant="outline"
