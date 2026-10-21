@@ -149,6 +149,7 @@ export function Articles() {
               onChange={(event) => setTitle(event.target.value)}
               className="w-full rounded-lg border bg-background px-3 py-2"
             />
+            {/* cover image */}
             <div className="space-y-3">
               <label className="block text-sm font-medium">
                 تصویر کاور مقاله
@@ -178,6 +179,7 @@ export function Articles() {
                 </div>
               )}
             </div>
+            {/* status */}
             <div className="space-y-2">
               <label
                 htmlFor="article-status"
@@ -198,6 +200,7 @@ export function Articles() {
                 <option value="published">منتشرشده</option>
               </select>
             </div>
+            {/* tags */}
             <div className="space-y-3">
               <label className="block text-sm font-medium">تگ‌های مقاله</label>
 
@@ -235,12 +238,13 @@ export function Articles() {
                   : `${selectedTags.length} تگ انتخاب شده است.`}
               </p>
             </div>
+            {/* content */}
             <div className="space-y-2">
               <label className="block text-sm font-medium">محتوای مقاله</label>
 
               <ArticleEditor content={content} onChange={setContent} />
             </div>
-            {/*  */}
+            {/* buttons */}
             <div className="flex flex-wrap gap-3">
               <Button type="button" onClick={handleCreateArticle}>
                 {editingArticleId !== null ? "ذخیره تغییرات" : "ایجاد مقاله"}
