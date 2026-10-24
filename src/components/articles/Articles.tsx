@@ -5,13 +5,16 @@ import { useState } from "react"
 import { Plus, Trash2, Pencil } from "lucide-react"
 
 // import editor component
-import ArticleEditor from "@/components/editor/ArticleEditor"
 
 // components button
 import { Button } from "@/components/ui/button"
+import { AddArticles } from "./subComponent/AddArticles"
 
 // Articles component
 export function Articles() {
+
+  // states
+  const [showForm, setShowForm] = useState(false)
   const [articles, setArticles] = useState<
     {
       id: number
@@ -39,65 +42,30 @@ export function Articles() {
       tags: ["CSS", "Frontend"],
     },
   ])
-
-  // use useState to manage articles state
-  const [showForm, setShowForm] = useState(false)
-
+const [editingArticleId, setEditingArticleId] = useState<number | null>(null)
   const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
-  const [editingArticleId, setEditingArticleId] = useState<number | null>(null)
-  const [coverImage, setCoverImage] = useState<File | null>(null)
   const [status, setStatus] = useState<"draft" | "published">("draft")
-  const availableTags = [
-    "React",
-    "TypeScript",
-    "JavaScript",
-    "Frontend",
-    "CSS",
-    "Node.js",
-  ]
-
   const [selectedTags, setSelectedTags] = useState<string[]>([])
 
-  const handleCreateArticle = () => {
-    if (!title.trim()) {
-      alert("لطفاً عنوان مقاله را وارد کن.")
-      return
-    }
 
-    if (editingArticleId !== null) {
-      setArticles((currentArticles) =>
-        currentArticles.map((article) =>
-          article.id === editingArticleId
-            ? {
-                ...article,
-                title: title.trim(),
-                status,
-                tags: [...selectedTags],
-              }
-            : article
-        )
-      )
-    } else {
-      const newArticle = {
-        id: Date.now(),
-        title: title.trim(),
-        status,
-        tags: [...selectedTags],
-      }
+  // send state to AddArticles component
+  const sendStateToAddArticles = {
+     atricleProps: {
+      articles,
+      setArticles,
+        editingArticleId,
+      setEditingArticleId,
+      title,
+      setTitle,
+      selectedTags,
+      setSelectedTags,
+      status,
+      setStatus,
+      showForm,
+      setShowForm,
 
-      setArticles((currentArticles) => [newArticle, ...currentArticles])
-    }
-
-    setTitle("")
-    setContent("")
-    setCoverImage(null)
-    setSelectedTags([])
-    setStatus("draft")
-    setEditingArticleId(null)
-    setShowForm(false)
+     }
   }
-
   const handleDeleteArticle = (id: number) => {
     const confirmed = window.confirm(
       "آیا مطمئنی که می‌خواهی این مقاله را حذف کنی؟"
@@ -135,132 +103,7 @@ export function Articles() {
         </Button>
       </div>
 
-      {showForm && (
-        <div className="rounded-xl border bg-background p-5">
-          <h3 className="mb-4 text-lg font-semibold">
-            {editingArticleId !== null ? "ویرایش مقاله" : "ساخت مقاله جدید"}
-          </h3>
-
-          <div className="space-y-4">
-            <input
-              type="text"
-              placeholder="عنوان مقاله"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-              className="w-full rounded-lg border bg-background px-3 py-2"
-            />
-            {/* cover image */}
-            <div className="space-y-3">
-              <label className="block text-sm font-medium">
-                تصویر کاور مقاله
-              </label>
-
-              <input
-                type="file"
-                accept="image/webp"
-                onChange={(event) => {
-                  const file = event.target.files?.[0] ?? null
-                  setCoverImage(file)
-                }}
-                className="block w-full rounded-lg border bg-background p-3 text-sm"
-              />
-
-              {coverImage && (
-                <div className="space-y-2">
-                  <img
-                    src={URL.createObjectURL(coverImage)}
-                    alt="پیش‌نمایش تصویر کاور"
-                    className="h-48 w-full rounded-lg border object-cover"
-                  />
-
-                  <p className="text-sm text-muted-foreground">
-                    {coverImage.name}
-                  </p>
-                </div>
-              )}
-            </div>
-            {/* status */}
-            <div className="space-y-2">
-              <label
-                htmlFor="article-status"
-                className="block text-sm font-medium"
-              >
-                وضعیت مقاله
-              </label>
-
-              <select
-                id="article-status"
-                value={status}
-                onChange={(event) =>
-                  setStatus(event.target.value as "draft" | "published")
-                }
-                className="w-full rounded-lg border bg-background px-3 py-2"
-              >
-                <option value="draft">پیش‌نویس</option>
-                <option value="published">منتشرشده</option>
-              </select>
-            </div>
-            {/* tags */}
-            <div className="space-y-3">
-              <label className="block text-sm font-medium">تگ‌های مقاله</label>
-
-              <div className="flex flex-wrap gap-2">
-                {availableTags.map((tag) => {
-                  const isSelected = selectedTags.includes(tag)
-
-                  return (
-                    <button
-                      key={tag}
-                      type="button"
-                      onClick={() => {
-                        setSelectedTags((currentTags) =>
-                          isSelected
-                            ? currentTags.filter((item) => item !== tag)
-                            : [...currentTags, tag]
-                        )
-                      }}
-                      className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
-                        isSelected
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "bg-background hover:bg-muted"
-                      }`}
-                    >
-                      {tag}
-                      {isSelected && " ×"}
-                    </button>
-                  )
-                })}
-              </div>
-
-              <p className="text-sm text-muted-foreground">
-                {selectedTags.length === 0
-                  ? "هنوز تگی انتخاب نکرده‌ای."
-                  : `${selectedTags.length} تگ انتخاب شده است.`}
-              </p>
-            </div>
-            {/* content */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium">محتوای مقاله</label>
-
-              <ArticleEditor content={content} onChange={setContent} />
-            </div>
-            {/* buttons */}
-            <div className="flex flex-wrap gap-3">
-              <Button type="button" onClick={handleCreateArticle}>
-                {editingArticleId !== null ? "ذخیره تغییرات" : "ایجاد مقاله"}
-              </Button>
-
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setShowForm(false)}
-              >
-                بستن فرم
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      {showForm && <AddArticles send={sendStateToAddArticles}/>}
 
       <div className="overflow-x-auto rounded-xl border bg-background">
         <table className="w-full text-right text-sm">
