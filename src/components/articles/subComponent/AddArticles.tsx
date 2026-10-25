@@ -13,20 +13,22 @@ type AddArticlesProps = {
       setStatus: React.Dispatch<React.SetStateAction<"draft" | "published">>
       showForm: boolean
       setShowForm: React.Dispatch<React.SetStateAction<boolean>>
+      content: string
+      setContent: React.Dispatch<React.SetStateAction<string>>
+      coverImage: File | null
+      setCoverImage: React.Dispatch<React.SetStateAction<File | null>>
     }
   }
 }
 
 import ArticleEditor from "@/components/editor/ArticleEditor"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+
 
 export const AddArticles = ({ send }: AddArticlesProps) => {
   // use useState to manage articles state
 
-  const [content, setContent] = useState("")
 
-  const [coverImage, setCoverImage] = useState<File | null>(null)
 
   const availableTags = [
     "React",
@@ -37,48 +39,51 @@ export const AddArticles = ({ send }: AddArticlesProps) => {
     "Node.js",
   ]
 
-  const handleCreateArticle = () => {
-    if (!send.atricleProps.title.trim()) {
-      alert("لطفاً عنوان مقاله را وارد کن.")
-      return
-    }
-
-    if (send.atricleProps.editingArticleId !== null) {
-      send.atricleProps.setArticles((currentArticles) =>
-        currentArticles.map((article) =>
-          article.id === send.atricleProps.editingArticleId
-            ? {
-                ...article,
-                title: send.atricleProps.title.trim(),
-                status,
-                tags: [...send.atricleProps.selectedTags],
-              }
-            : article
-        )
-      )
-    } else {
-      const newArticle = {
-        id: Date.now(),
-        title: send.atricleProps.title.trim(),
-        status,
-        tags: [...send.atricleProps.selectedTags],
-      }
-
-      send.atricleProps.setArticles((currentArticles) => [
-        newArticle,
-        ...currentArticles,
-      ])
-    }
-
-    send.atricleProps.setTitle("")
-    setContent("")
-    setCoverImage(null)
-    send.atricleProps.setSelectedTags([])
-    send.atricleProps.setStatus("draft")
-    send.atricleProps.setEditingArticleId(null)
-    send.atricleProps.setShowForm(false)
+const handleCreateArticle = () => {
+  if (!send.atricleProps.title.trim()) {
+    alert("لطفاً عنوان مقاله را وارد کن.")
+    return
   }
 
+  if (send.atricleProps.editingArticleId !== null) {
+    send.atricleProps.setArticles((currentArticles) =>
+      currentArticles.map((article) =>
+        article.id === send.atricleProps.editingArticleId
+          ? {
+              ...article,
+              title: send.atricleProps.title.trim(),
+              content: send.atricleProps.content,
+              coverImage: send.atricleProps.coverImage,
+              status: send.atricleProps.status,
+              tags: [...send.atricleProps.selectedTags],
+            }
+          : article
+      )
+    )
+  } else {
+    const newArticle = {
+      id: Date.now(),
+      title: send.atricleProps.title.trim(),
+      content: send.atricleProps.content,
+      coverImage: send.atricleProps.coverImage,
+      status: send.atricleProps.status,
+      tags: [...send.atricleProps.selectedTags],
+    }
+
+    send.atricleProps.setArticles((currentArticles) => [
+      newArticle,
+      ...currentArticles,
+    ])
+  }
+
+  send.atricleProps.setTitle("")
+  send.atricleProps.setContent("")
+  send.atricleProps.setCoverImage(null)
+  send.atricleProps.setSelectedTags([])
+  send.atricleProps.setStatus("draft")
+  send.atricleProps.setEditingArticleId(null)
+  send.atricleProps.setShowForm(false)
+}
   return (
     <div className="rounded-xl border bg-background p-5">
       <h3 className="mb-4 text-lg font-semibold">
@@ -104,20 +109,20 @@ export const AddArticles = ({ send }: AddArticlesProps) => {
             accept="image/webp"
             onChange={(event) => {
               const file = event.target.files?.[0] ?? null
-              setCoverImage(file)
+              send.atricleProps.setCoverImage(file)
             }}
             className="block w-full rounded-lg border bg-background p-3 text-sm"
           />
 
-          {coverImage && (
+          {send.atricleProps.coverImage && (
             <div className="space-y-2">
               <img
-                src={URL.createObjectURL(coverImage)}
+                src={URL.createObjectURL(send.atricleProps.coverImage)}
                 alt="پیش‌نمایش تصویر کاور"
-                className="h-48 w-full rounded-lg border object-cover"
+                className="h-48 w-48 rounded-lg border object-cover"
               />
 
-              <p className="text-sm text-muted-foreground">{coverImage.name}</p>
+              <p className="text-sm text-muted-foreground">{send.atricleProps.coverImage.name}</p>
             </div>
           )}
         </div>
@@ -183,7 +188,7 @@ export const AddArticles = ({ send }: AddArticlesProps) => {
         <div className="space-y-2">
           <label className="block text-sm font-medium">محتوای مقاله</label>
 
-          <ArticleEditor content={content} onChange={setContent} />
+          <ArticleEditor content={send.atricleProps.content} onChange={send.atricleProps.setContent} />
         </div>
         {/* buttons */}
         <div className="flex flex-wrap gap-3">

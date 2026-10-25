@@ -28,9 +28,9 @@ export default function ArticleEditor({
     ],
     content,
     immediatelyRender: false,
-    onUpdate: ({ editor }) => {
-      onChange(editor.getHTML())
-    },
+ onUpdate: ({ editor }) => {
+  onChange(JSON.stringify(editor.getJSON()))
+},
     editorProps: {
       attributes: {
         class:

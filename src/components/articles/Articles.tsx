@@ -15,37 +15,47 @@ export function Articles() {
 
   // states
   const [showForm, setShowForm] = useState(false)
-  const [articles, setArticles] = useState<
-    {
-      id: number
-      title: string
-      status: "draft" | "published"
-      tags: string[]
-    }[]
-  >([
-    {
-      id: 1,
-      title: "آموزش React",
-      status: "published",
-      tags: ["React", "Frontend"],
-    },
-    {
-      id: 2,
-      title: "آشنایی با TypeScript",
-      status: "draft",
-      tags: ["TypeScript"],
-    },
-    {
-      id: 3,
-      title: "شروع کار با Tailwind CSS",
-      status: "published",
-      tags: ["CSS", "Frontend"],
-    },
-  ])
+const [articles, setArticles] = useState<
+  {
+    id: number
+    title: string
+    content: string
+    coverImage: File | null
+    status: "draft" | "published"
+    tags: string[]
+  }[]
+>([
+  {
+    id: 1,
+    title: "آموزش React",
+    content: "",
+    coverImage: null,
+    status: "published",
+    tags: ["React", "Frontend"],
+  },
+  {
+    id: 2,
+    title: "آشنایی با TypeScript",
+    content: "",
+    coverImage: null,
+    status: "draft",
+    tags: ["TypeScript"],
+  },
+  {
+    id: 3,
+    title: "شروع کار با Tailwind CSS",
+    content: "",
+    coverImage: null,
+    status: "published",
+    tags: ["CSS", "Frontend"],
+  },
+])
 const [editingArticleId, setEditingArticleId] = useState<number | null>(null)
   const [title, setTitle] = useState("")
   const [status, setStatus] = useState<"draft" | "published">("draft")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [content, setContent] = useState("")
+  const [coverImage, setCoverImage] = useState<File | null>(null)
 
 
   // send state to AddArticles component
@@ -63,6 +73,10 @@ const [editingArticleId, setEditingArticleId] = useState<number | null>(null)
       setStatus,
       showForm,
       setShowForm,
+      content,
+      setContent,
+      coverImage,
+      setCoverImage,
 
      }
   }
@@ -78,17 +92,19 @@ const [editingArticleId, setEditingArticleId] = useState<number | null>(null)
     )
   }
 
-  const handleEditArticle = (id: number) => {
-    const article = articles.find((item) => item.id === id)
+const handleEditArticle = (id: number) => {
+  const article = articles.find((item) => item.id === id)
 
-    if (!article) return
+  if (!article) return
 
-    setEditingArticleId(article.id)
-    setTitle(article.title)
-    setStatus(article.status)
-    setSelectedTags([...article.tags])
-    setShowForm(true)
-  }
+  setEditingArticleId(article.id)
+  setTitle(article.title)
+  setContent(article.content)
+  setCoverImage(article.coverImage)
+  setStatus(article.status)
+  setSelectedTags([...article.tags])
+  setShowForm(true)
+}
 
 
   
