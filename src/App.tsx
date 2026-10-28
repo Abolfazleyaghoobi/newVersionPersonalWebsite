@@ -11,6 +11,9 @@ import {
 
 } from "lucide-react"
 import { Articles } from "./components/articles/Articles"
+import Login from "./page/Login"
+import Register from "./page/Register"
+
 
 // components button
 
@@ -145,10 +148,16 @@ function AdminLayout() {
 }
 
 // App component
+
 export default function App() {
   return (
     <BrowserRouter>
-      <AdminLayout />
+  <Routes>
+  <Route path="/login" element={<Login />} />
+  <Route path="/register" element={<Register />} />
+  <Route path="/*" element={<AdminLayout />} />
+</Routes>
     </BrowserRouter>
   )
 }
+

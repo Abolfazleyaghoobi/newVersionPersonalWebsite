@@ -4,6 +4,7 @@ import Link from "@tiptap/extension-link"
 import StarterKit from "@tiptap/starter-kit"
 import Image from "@tiptap/extension-image"
 import { NodeSelection } from "@tiptap/pm/state"
+import { uploadArticleImage } from "@/services/media.service";
 
 interface ArticleEditorProps {
   content: string
@@ -14,6 +15,21 @@ export default function ArticleEditor({
   content,
   onChange,
 }: ArticleEditorProps) {
+  const parseEditorContent = (value: string) => {
+  if (!value) return ""
+
+  try {
+    const parsed = JSON.parse(value)
+
+    if (parsed?.type === "doc") {
+      return parsed
+    }
+  } catch {
+    // محتوای قدیمی HTML است
+  }
+
+  return value
+}
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -26,7 +42,7 @@ export default function ArticleEditor({
         allowBase64: true,
       }),
     ],
-    content,
+    content: parseEditorContent(content),
     immediatelyRender: false,
  onUpdate: ({ editor }) => {
   onChange(JSON.stringify(editor.getJSON()))
@@ -48,21 +64,37 @@ export default function ArticleEditor({
     },
   })
 
-  const handleImageUpload = (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0]
 
-    if (!file || !editor) return
+const handleImageUpload = async (
+  event: ChangeEvent<HTMLInputElement>,
+) => {
+  const file = event.target.files?.[0];
 
-    if (!file.type.startsWith("image/")) {
-      alert("لطفاً یک فایل تصویری انتخاب کن.")
-      event.target.value = ""
-      return
-    }
+  if (!file || !editor) return;
 
-    const imageUrl = URL.createObjectURL(file)
+  if (file.type !== "image/webp") {
+    alert("فعلاً فقط تصویر با فرمت WebP پشتیبانی می‌شود.");
+    event.target.value = "";
+    return;
+  }
 
+  if (file.size > 5 * 1024 * 1024) {
+    alert("حجم تصویر نباید بیشتر از ۵ مگابایت باشد.");
+    event.target.value = "";
+    return;
+  }
+
+  const token = sessionStorage.getItem("accessToken");
+
+  if (!token) {
+    alert("ابتدا وارد حساب کاربری‌ات شو.");
+    event.target.value = "";
+    return;
+  }
+
+  try {
+    const imageUrl = await uploadArticleImage(file, token);
+console.log("Image URL:", imageUrl);
     editor
       .chain()
       .focus()
@@ -70,10 +102,18 @@ export default function ArticleEditor({
         src: imageUrl,
         alt: file.name,
       })
-      .run()
-
-    event.target.value = ""
+      .run();
+  } catch (error) {
+    alert(
+      error instanceof Error
+        ? error.message
+        : "آپلود تصویر ناموفق بود.",
+    );
+  } finally {
+    event.target.value = "";
   }
+};
+
 
  const handleDeleteImage = () => {
   if (!editor) return
@@ -96,12 +136,11 @@ export default function ArticleEditor({
       <div className="flex flex-wrap gap-2">
         <label className="cursor-pointer rounded-md border px-3 py-1 text-sm">
           انتخاب تصویر
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="hidden"
-          />
+      <input
+  type="file"
+  accept="image/webp"
+  onChange={handleImageUpload}
+/>
         </label>
 
         <button

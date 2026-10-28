@@ -154,41 +154,45 @@ const handleEditArticle = (id: number) => {
                   </div>
                 </td>
 
-                <td className="p-4">
-                  <span
-                    className={` px-2.5 py-2.5 w-45 rounded-[9px] flex items-center justify-between text-xs ${
-                      article.status === "published"
-                        ? "bg-[#474747] text-green-100"
-                        : "bg-[#1b1b1b] text-yellow-100"
-                    }`}
-                  >
-                    {article.status === "published" ? "منتشرشده" : "پیش‌نویس"}
+               
+<td className="p-4">
+  <span
+    className={`inline-flex rounded-[9px] px-2.5 py-2.5 text-xs ${
+      article.status === "published"
+        ? "bg-[#474747] text-green-100"
+        : "bg-[#1b1b1b] text-yellow-100"
+    }`}
+  >
+    {article.status === "published"
+      ? "منتشرشده"
+      : "پیش‌نویس"}
+  </span>
+</td>
 
-                    <td className="">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => handleEditArticle(article.id)}
-                          aria-label="ویرایش مقاله"
-                          title="ویرایش مقاله"
-                        >
-                          <Pencil className="size-4" />
-                        </Button>
+<td className="p-4">
+  <div className="flex items-center gap-2">
+    <Button
+      variant="outline"
+      size="icon"
+      onClick={() => handleEditArticle(article.id)}
+      aria-label="ویرایش مقاله"
+      title="ویرایش مقاله"
+    >
+      <Pencil className="size-4" />
+    </Button>
 
-                        <Button
-                          variant="destructive"
-                          size="icon"
-                          onClick={() => handleDeleteArticle(article.id)}
-                          aria-label="حذف مقاله"
-                          title="حذف مقاله"
-                        >
-                          <Trash2 className="size-4" />
-                        </Button>
-                      </div>
-                    </td>
-                  </span>
-                </td>
+    <Button
+      variant="destructive"
+      size="icon"
+      onClick={() => handleDeleteArticle(article.id)}
+      aria-label="حذف مقاله"
+      title="حذف مقاله"
+    >
+      <Trash2 className="size-4" />
+    </Button>
+  </div>
+</td>
+
               </tr>
             ))}
           </tbody>

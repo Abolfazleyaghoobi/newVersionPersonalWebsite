@@ -44,7 +44,7 @@ const handleCreateArticle = () => {
     alert("لطفاً عنوان مقاله را وارد کن.")
     return
   }
-
+console.log("Article content:", send.atricleProps.content)
   if (send.atricleProps.editingArticleId !== null) {
     send.atricleProps.setArticles((currentArticles) =>
       currentArticles.map((article) =>
